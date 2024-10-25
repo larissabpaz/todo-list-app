@@ -225,8 +225,31 @@
           <clipPath id="a"><path fill="#fff" d="M0 0h982v239H0z" /></clipPath>
         </defs>
       </svg>
-      <h1>Hello, {{ title }}</h1>
-      <p>Congratulations! Your app is running. 🎉</p>
+      <h1>Minhas Tarefas</h1>
+<ul class="animate__animated animate__zoomIn" *ngIf="mode=='list'">
+  <p *ngIf="todos.length==0" ><small>Você não tem nenhuma tarefa hoje!</small></p>
+  <li *ngFor="let todo of todos">
+    {{ todo.title }}
+    <button id="iconLi" *ngIf="!todo.done" (click)="markAsDone(todo)"><i class='bx bx-check-circle'></i></button> 
+    <button id="iconLi" *ngIf="todo.done" (click)="markAsUndone(todo)"><i class='bx bxs-check-circle'></i></button> 
+    <button id="iconLi" (click)="remove(todo)"><i class='bx bxs-trash-alt'></i></button>
+  </li>
+</ul>
+<div id="modal" class="animate__animated animate__zoomIn" *ngIf="mode=='add'">
+  <h2>Nova Tarefa</h2>
+  <form [formGroup]="form">
+      <input type="text" placeholder="Digite sua tarefa" maxlength="60" formControlName="title"/>
+      <small *ngIf="form.controls['title'].invalid && !form.controls['title'].pristine" class="danger">Este campo deve conter entre 3 e 60 caracteres!
+        <br>
+      </small>
+      <p>
+        <button class="button" [disabled]="form.invalid" (click)="add()"><i class='bx bxs-up-arrow-circle' ></i> Salvar</button>
+      </p>
+  </form>
+</div>
+
+<button class="add-button animate__animated animate__fadeInUp button" (click)="changeMode('add')" *ngIf="mode=='list'"><i class='bx bxs-plus-circle'></i> Nova Tarefa</button>
+<button class="add-button animate__animated animate__fadeInUp button" (click)="changeMode('list')" *ngIf="mode=='add'" id="cancel"><i class='bx bxs-x-circle' ></i> Cancelar</button>
     </div>
     <div class="divider" role="separator" aria-label="Divider"></div>
     <div class="right-side">
@@ -333,4 +356,4 @@
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 
 
-<router-outlet />
+<!-- <router-outlet /> -->
